@@ -14,17 +14,25 @@ chirpsTable <- function(){
   
   # https://data.chc.ucsb.edu/products/CHIRPS-2.0/moving_01pentad/tifs/Anomaly_01PentAccum_Current.tif
   # movingpentad <- data.frame(var = "moving", interval = c("01","02","06","12","18"), suffix = "pentad", format = "tifs")
-  return(dd)
+  return(as.data.frame(dd))
 }
 
+region = "global"
+res = 0.05
+interval = "daily"
+startdate = "1981-01-01"
+startdate = "1997-01-01"
+enddate = "2021-10-31"
+path = "/cluster01/workspace/ONECGIAR/Data"
+# path <- "/share/spatial02/users/anighosh/data/chirps/"
 
-rain_chirps <- function(region = "global", startdate, enddate, res, path, asRaster = FALSE,...) {
+rain_chirps <- function(region = "global", res, interval, startdate, enddate, path, asRaster = FALSE,...) {
   # check directory
   stopifnot(dir.exists(path))
   
   # check arguments
   dd <- chirpsTable()
-  if(!region %in% c(unique(dd$region))){ stop("region name not avaiable; see chirpsTable()") }
+  if(!region %in% c(unique(as.character(dd$region)))){ stop("region name not avaiable; see chirpsTable()") }
   
   # check for resolution
   res <- as.character(res)
